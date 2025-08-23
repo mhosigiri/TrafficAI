@@ -7,3 +7,6 @@ torch>=2.0.0
 torchvision>=0.15.0
 matplotlib>=3.7.0
 kagglehub>=0.2.0
+# GUI and RL dependencies
+tkinter
+sqlite3

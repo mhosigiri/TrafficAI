@@ -1,6 +1,6 @@
-train: /Users/arniskc/Desktop/TrafficAI/data/images
-val: /Users/arniskc/Desktop/TrafficAI/data/images
-test: /Users/arniskc/Desktop/TrafficAI/data/images
+train: C:/Users/Arnis KC/Desktop/Create-with-code/TrafficAI/data/images
+val: C:/Users/Arnis KC/Desktop/Create-with-code/TrafficAI/data/images  
+test: C:/Users/Arnis KC/Desktop/Create-with-code/TrafficAI/data/images
 
 nc: 2
 names:

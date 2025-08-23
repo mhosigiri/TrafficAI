@@ -8,24 +8,45 @@ import numpy as np
 from ultralytics import YOLO
 from pathlib import Path
 import os
+import torch
 
 
 class HelmetDetector:
     """YOLOv8-based helmet detector."""
     
-    def __init__(self, model_path="models/helmet_yolov8.pt", confidence=0.5):
+    def __init__(self, model_path="models/helmet_yolov8.pt", confidence=0.5, device=None):
         """Initialize the helmet detector.
         
         Args:
             model_path: Path to the trained YOLOv8 model
             confidence: Minimum confidence threshold for detections
+            device: Device to run inference on ('cuda', 'mps', 'cpu', or None for auto-detect)
         """
         self.model_path = model_path
         self.confidence = confidence
         self.model = None
         self.class_names = ["Without Helmet", "With Helmet"]
+        self.device = self._get_device(device)
         
         self.load_model()
+    
+    def _get_device(self, device=None):
+        """Auto-detect or validate the device for inference."""
+        if device is not None:
+            return device
+            
+        # Auto-detect best available device
+        if torch.cuda.is_available():
+            device = "cuda"
+            print(f"🚀 Using GPU: {torch.cuda.get_device_name(0)}")
+        elif hasattr(torch.backends, 'mps') and torch.backends.mps.is_available():
+            device = "mps"
+            print("🍎 Using Apple Silicon GPU (MPS)")
+        else:
+            device = "cpu"
+            print("💻 Using CPU for inference")
+        
+        return device
     
     def load_model(self):
         """Load the YOLOv8 model."""
@@ -39,6 +60,11 @@ class HelmetDetector:
                 print("Using YOLOv8 nano model as fallback (will detect persons only)")
                 self.model = YOLO('yolov8n.pt')
                 self.class_names = ["person"]  # Standard COCO class
+            
+            # Move model to the appropriate device
+            if self.device != "cpu":
+                self.model.to(self.device)
+                print(f"📱 Model loaded on {self.device.upper()}")
                 
         except Exception as e:
             print(f"❌ Error loading model: {e}")
@@ -58,8 +84,8 @@ class HelmetDetector:
             return []
         
         try:
-            # Run inference
-            results = self.model(image_path, conf=self.confidence)
+            # Run inference with device specification
+            results = self.model(image_path, conf=self.confidence, device=self.device)
             
             detections = []
             for result in results:
