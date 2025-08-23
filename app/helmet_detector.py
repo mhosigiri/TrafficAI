@@ -119,21 +119,29 @@ class HelmetDetector:
             print(f"❌ Error during detection: {e}")
             return []
     
-    def annotate_image(self, image_path, detections, output_path=None):
+    def annotate_image(self, image_input, detections, output_path=None):
         """Annotate image with detection results.
         
         Args:
-            image_path: Path to input image
+            image_input: Either a file path (str) or image array (numpy array)
             detections: List of detection dictionaries
             output_path: Path to save annotated image (optional)
             
         Returns:
             Annotated image as numpy array
         """
-        # Read image
-        image = cv2.imread(image_path)
-        if image is None:
-            print(f"❌ Could not read image: {image_path}")
+        # Handle both file path and image array inputs
+        if isinstance(image_input, str):
+            # Read image from file path
+            image = cv2.imread(image_input)
+            if image is None:
+                print(f"❌ Could not read image: {image_input}")
+                return None
+        elif isinstance(image_input, np.ndarray):
+            # Use the provided image array directly
+            image = image_input.copy()
+        else:
+            print(f"❌ Invalid image input type: {type(image_input)}")
             return None
         
         # Draw detections

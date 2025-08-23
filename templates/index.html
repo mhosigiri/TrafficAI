@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TrafficAI - Intelligent Traffic Monitoring</title>
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Icons -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Custom CSS -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+  </head>
+  <body>
+    <!-- Background Animation -->
+    <div class="bg-animation">
+      <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+        <div class="shape shape-4"></div>
+        <div class="shape shape-5"></div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="nav-brand">
+          <i class="fas fa-brain nav-icon"></i>
+          <span class="brand-text"
+            >Traffic<span class="brand-ai">AI</span></span
+          >
+        </div>
+        <div class="nav-stats">
+          <div class="stat-item">
+            <span class="stat-label">Status</span>
+            <span class="stat-value" id="status">Ready</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Processed</span>
+            <span class="stat-value" id="processed">0</span>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="container">
+        <!-- Hero Section -->
+        <section class="hero-section">
+          <div class="hero-content">
+            <h1 class="hero-title">
+              <span class="title-gradient">AI-Powered</span><br />
+              Traffic Monitoring
+            </h1>
+            <p class="hero-subtitle">
+              Advanced helmet detection and license plate recognition powered by
+              cutting-edge computer vision
+            </p>
+            <div class="hero-features">
+              <div class="feature-badge">
+                <i class="fas fa-zap"></i>
+                <span>Real-time Processing</span>
+              </div>
+              <div class="feature-badge">
+                <i class="fas fa-shield-alt"></i>
+                <span>Helmet Detection</span>
+              </div>
+              <div class="feature-badge">
+                <i class="fas fa-id-card"></i>
+                <span>License Plate Recognition</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Upload Section -->
+        <section class="upload-section">
+          <div class="upload-card">
+            <div class="card-header">
+              <h2 class="card-title">
+                <i class="fas fa-cloud-upload-alt"></i>
+                Upload & Analyze
+              </h2>
+              <p class="card-subtitle">
+                Drop your images or videos for instant AI analysis
+              </p>
+            </div>
+
+            <!-- Upload Area -->
+            <div class="upload-area" id="uploadArea">
+              <input
+                type="file"
+                id="fileInput"
+                accept="image/*,video/*"
+                hidden
+              />
+              <div class="upload-content">
+                <div class="upload-icon">
+                  <i class="fas fa-cloud-upload-alt"></i>
+                </div>
+                <h3 class="upload-title">Drop files here or click to browse</h3>
+                <p class="upload-text">
+                  Supports JPG, PNG, MP4, AVI up to 50MB
+                </p>
+                <button class="browse-btn" type="button">
+                  <i class="fas fa-folder-open"></i>
+                  Browse Files
+                </button>
+              </div>
+              <div class="upload-progress" id="uploadProgress">
+                <div class="progress-bar">
+                  <div class="progress-fill"></div>
+                </div>
+                <span class="progress-text">Uploading...</span>
+              </div>
+            </div>
+
+            <!-- File Preview -->
+            <div class="file-preview" id="filePreview">
+              <div class="preview-header">
+                <h3 class="preview-title">Selected File</h3>
+                <button class="remove-btn" id="removeFile">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+              <div class="preview-content">
+                <div class="preview-image">
+                  <img id="previewImg" alt="Preview" style="display: none" />
+                  <div
+                    class="video-preview"
+                    id="videoPreview"
+                    style="display: none"
+                  >
+                    <video id="previewVideo" controls muted>
+                      <source src="" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                </div>
+                <div class="preview-info">
+                  <h4 id="fileName">filename.jpg</h4>
+                  <div class="file-details">
+                    <span class="file-size" id="fileSize">2.5 MB</span>
+                    <span class="file-type" id="fileType">JPEG Image</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Detection Options -->
+            <div class="detection-options" id="detectionOptions">
+              <h3 class="options-title">Select Detection Models</h3>
+              <div class="option-grid">
+                <label class="option-card">
+                  <input type="checkbox" id="helmetDetection" checked />
+                  <div class="option-content">
+                    <div class="option-icon helmet-icon">
+                      <i class="fas fa-hard-hat"></i>
+                    </div>
+                    <h4>Helmet Detection</h4>
+                    <p>Identify riders with and without helmets</p>
+                  </div>
+                  <div class="option-check">
+                    <i class="fas fa-check"></i>
+                  </div>
+                </label>
+
+                <label class="option-card">
+                  <input type="checkbox" id="plateDetection" checked />
+                  <div class="option-content">
+                    <div class="option-icon plate-icon">
+                      <i class="fas fa-id-badge"></i>
+                    </div>
+                    <h4>License Plate Recognition</h4>
+                    <p>Extract and read license plate numbers</p>
+                  </div>
+                  <div class="option-check">
+                    <i class="fas fa-check"></i>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Process Button -->
+            <div class="process-section" id="processSection">
+              <button class="process-btn" id="processBtn" disabled>
+                <span class="btn-text">
+                  <i class="fas fa-play"></i>
+                  Start Analysis
+                </span>
+                <span class="btn-loader">
+                  <i class="fas fa-spinner fa-spin"></i>
+                  Processing...
+                </span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Results Section -->
+        <section class="results-section" id="resultsSection">
+          <div class="results-header">
+            <h2 class="results-title">
+              <i class="fas fa-chart-line"></i>
+              Analysis Results
+            </h2>
+            <div class="results-actions">
+              <button class="action-btn" id="downloadBtn">
+                <i class="fas fa-download"></i>
+                Download Results
+              </button>
+              <button class="action-btn secondary" id="newAnalysisBtn">
+                <i class="fas fa-plus"></i>
+                New Analysis
+              </button>
+            </div>
+          </div>
+
+          <div class="results-grid">
+            <!-- Helmet Detection Results -->
+            <div class="result-card helmet-results">
+              <div class="card-header">
+                <h3>
+                  <i class="fas fa-hard-hat"></i>
+                  Helmet Detection
+                </h3>
+                <div class="status-badge success" id="helmetStatus">
+                  <i class="fas fa-check"></i>
+                  Completed
+                </div>
+              </div>
+              <div class="card-content">
+                <!-- Safety Status Alert -->
+                <div
+                  class="safety-status safe"
+                  id="overallSafety"
+                  style="margin-bottom: var(--space-4); justify-content: center"
+                >
+                  <i class="fas fa-shield-alt"></i>
+                  <span id="safetyText">All Clear - Safe Traffic</span>
+                </div>
+
+                <div class="stats-grid">
+                  <div class="stat-box">
+                    <div class="stat-number" id="totalDetections">0</div>
+                    <div class="stat-label">Total Detections</div>
+                  </div>
+                  <div class="stat-box success">
+                    <div class="stat-number" id="withHelmet">0</div>
+                    <div class="stat-label">Safe Riders</div>
+                  </div>
+                  <div class="stat-box danger">
+                    <div class="stat-number" id="withoutHelmet">0</div>
+                    <div class="stat-label">Unsafe Riders</div>
+                  </div>
+                  <div class="stat-box">
+                    <div class="stat-number" id="accuracyScore">98%</div>
+                    <div class="stat-label">Detection Confidence</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- License Plate Results -->
+            <div class="result-card plate-results">
+              <div class="card-header">
+                <h3>
+                  <i class="fas fa-id-badge"></i>
+                  License Plates
+                </h3>
+                <div class="status-badge success" id="plateStatus">
+                  <i class="fas fa-check"></i>
+                  Completed
+                </div>
+              </div>
+              <div class="card-content">
+                <div class="plates-list" id="platesList">
+                  <div class="empty-state">
+                    <i class="fas fa-search"></i>
+                    <p>No license plates detected</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Video Analysis Results -->
+            <div
+              class="result-card video-analysis"
+              id="videoAnalysis"
+              style="display: none"
+            >
+              <div class="card-header">
+                <h3><i class="fas fa-video"></i> Video Frame Analysis</h3>
+                <div class="video-info">
+                  <span id="videoStats">Processing...</span>
+                </div>
+              </div>
+              <div class="card-content">
+                <div id="videoFrameGrid" class="video-frame-grid">
+                  <!-- Video frames will be inserted here -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Annotated Image -->
+            <div class="result-card image-result full-width">
+              <div class="card-header">
+                <h3>
+                  <i class="fas fa-image"></i>
+                  Annotated Image
+                </h3>
+                <div class="image-actions">
+                  <button class="action-btn small" id="zoomBtn">
+                    <i class="fas fa-search-plus"></i>
+                    Zoom
+                  </button>
+                  <button class="action-btn small" id="downloadImageBtn">
+                    <i class="fas fa-download"></i>
+                    Download
+                  </button>
+                </div>
+              </div>
+              <div class="card-content">
+                <div class="image-container">
+                  <img id="resultImage" alt="Processed Image" />
+                  <div class="image-overlay" id="imageOverlay">
+                    <div class="overlay-content">
+                      <i class="fas fa-search-plus"></i>
+                      <p>Click to view full size</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Image Modal -->
+    <div class="modal" id="imageModal">
+      <div class="modal-backdrop"></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Annotated Image</h3>
+          <button class="modal-close" id="modalClose">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <img id="modalImage" alt="Full Size Image" />
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+  </body>
+</html>

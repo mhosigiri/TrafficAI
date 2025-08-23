@@ -98,6 +98,19 @@ ipython_config.py
 #   Similar to Pipfile.lock, it is generally recommended to include uv.lock in version control.
 #   This is especially recommended for binary packages to ensure reproducibility, and is more
 #   commonly ignored for libraries.
+
+# Web Application specific
+uploads/
+results/
+*.log
+.env
+.venv/
+__pycache__/
+*.pyc
+
+# Generated annotated images
+data/images/*_annotated*.jpg
+data/images/*_annotated*.png
 #uv.lock
 
 # poetry
@@ -187,6 +200,7 @@ AGENTS.md
 *.md
 !README.md
 !README_DOCKER.md
+!README_WEB.md
 
 # Ignore data backup folder
 data_backup/
