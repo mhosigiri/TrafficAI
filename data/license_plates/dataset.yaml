@@ -1,7 +1,8 @@
 # License Plate Detection Dataset Configuration
-train: ./data/license_plates/train
-val: ./data/license_plates/test
-test: ./data/license_plates/test
+path: C:\Users\Arnis KC\Desktop\Create-with-code\TrafficAI\data\license_plates
+train: train
+val: test
+test: test
 
 nc: 1  # number of classes
 names:

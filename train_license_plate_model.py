@@ -115,11 +115,21 @@ def train_license_plate_model():
         print("Please run: python app/xml_to_yolo_license_plates.py")
         return
     
-    # Count files
-    image_files = len([f for f in os.listdir(images_dir) 
-                      if f.lower().endswith(('.jpg', '.jpeg', '.png'))])
-    label_files = len([f for f in os.listdir(labels_dir) 
-                      if f.lower().endswith('.txt')])
+    # Count files in train directory (where actual data is)
+    train_dir = "data/license_plates/train"
+    test_dir = "data/license_plates/test"
+    
+    image_files = 0
+    label_files = 0
+    
+    for dir_path in [train_dir, test_dir]:
+        if os.path.exists(dir_path):
+            dir_images = len([f for f in os.listdir(dir_path) 
+                             if f.lower().endswith(('.jpg', '.jpeg', '.png'))])
+            dir_labels = len([f for f in os.listdir(dir_path) 
+                             if f.lower().endswith('.txt')])
+            image_files += dir_images
+            label_files += dir_labels
     
     print(f"📊 Dataset Overview:")
     print(f"   - Images: {image_files}")
@@ -141,11 +151,11 @@ def train_license_plate_model():
     # Create models directory
     os.makedirs("models", exist_ok=True)
     
-    # Adjust epochs based on device and dataset size
-    if image_files > 100:
-        epochs = 100 if has_gpu else 50
-    else:
-        epochs = 50 if has_gpu else 25
+    # Force 50 epochs and GPU usage as requested
+    epochs = 50
+    if not has_gpu:
+        print("⚠️  GPU requested but not available, attempting to use GPU anyway...")
+        device = "cuda"  # Force GPU attempt
     
     # Training parameters  
     print(f"\n🏋️ Starting license plate training...")
