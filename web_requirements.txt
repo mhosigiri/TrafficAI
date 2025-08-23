@@ -1,8 +1,18 @@
-Flask==2.3.3
-Werkzeug==2.3.7
-Pillow==10.0.1
-opencv-python==4.8.1.78
-numpy==1.24.3
-ultralytics==8.0.196
+# Core web framework
+Flask>=2.3.0
+Werkzeug>=2.3.0
+
+# Image processing
+Pillow>=10.0.0
+opencv-python>=4.8.0
+
+# AI/ML dependencies
+numpy>=1.24.0
+ultralytics>=8.0.0
+
+# PyTorch (with flexible versions for different systems)
 torch>=2.0.0
 torchvision>=0.15.0
+
+# Additional utilities
+python-dotenv>=1.0.0
