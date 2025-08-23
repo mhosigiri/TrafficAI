@@ -1,0 +1,8 @@
+train: /Users/arniskc/Desktop/TrafficAI/data/images
+val: /Users/arniskc/Desktop/TrafficAI/data/images
+test: /Users/arniskc/Desktop/TrafficAI/data/images
+
+nc: 2
+names:
+  0: Without Helmet
+  1: With Helmet
