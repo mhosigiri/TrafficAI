@@ -179,3 +179,51 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+
+# Project specific ignores
+AGENTS.md
+
+# Ignore all markdown files except README.md and Docker docs
+*.md
+!README.md
+!README_DOCKER.md
+
+# Ignore data backup folder
+data_backup/
+
+# Ignore test files
+test_*.py
+*_test.py
+check_*.py
+setup_*.py
+demo_*.py
+download_*.py
+
+# Ignore test outputs
+test_results_*.png
+test_results_*.jpg
+final_test_*.jpg
+final_test_*.png
+
+# Ignore temporary files
+temp_*/
+deployment_test/
+
+# Ignore YOLO base models
+yolo*.pt
+!models/*.pt
+
+# Ignore training runs (but keep the models directory)
+runs/
+
+# Ignore violations directory (contains sensitive data)
+violations/
+
+# Ignore logs
+logs/
+
+# Ignore session reports
+session_report_*.json
+
+# Ignore cache files
+*.cache

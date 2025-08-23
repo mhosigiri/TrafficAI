@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  # Production deployment with GPU support
+  trafficai-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile.gpu
+    image: trafficai:gpu
+    container_name: trafficai-production
+    restart: unless-stopped
+    runtime: nvidia
+    volumes:
+      # Persistent data volumes
+      - trafficai-data:/app/data
+      - trafficai-models:/app/models
+      - trafficai-violations:/app/violations
+      - trafficai-logs:/app/logs
+      # Config mount
+      - ./deployment_config.json:/app/deployment_config.json:ro
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility,video
+      - TZ=UTC
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD", "python", "deploy_traffic_monitor.py", "--mode", "health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - trafficai-net
+
+  # Web API service (optional future enhancement)
+  trafficai-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.gpu
+    image: trafficai:gpu
+    container_name: trafficai-api
+    restart: unless-stopped
+    runtime: nvidia
+    ports:
+      - "8080:8080"
+    volumes:
+      - trafficai-models:/app/models:ro
+      - trafficai-violations:/app/violations
+      - trafficai-logs:/app/logs
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    command: python app/main.py  # Or future API server
+    networks:
+      - trafficai-net
+
+networks:
+  trafficai-net:
+    driver: bridge
+
+volumes:
+  trafficai-data:
+  trafficai-models:
+  trafficai-violations:
+  trafficai-logs:

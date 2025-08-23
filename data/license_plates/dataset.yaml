@@ -1,0 +1,8 @@
+# License Plate Detection Dataset Configuration
+train: ./data/license_plates/train
+val: ./data/license_plates/test
+test: ./data/license_plates/test
+
+nc: 1  # number of classes
+names:
+  0: license_plate

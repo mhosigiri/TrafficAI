@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  trafficai:
+    build: .
+    image: trafficai:latest
+    container_name: trafficai-monitor
+    volumes:
+      # Mount data directories
+      - ./data:/app/data
+      - ./violations:/app/violations
+      - ./logs:/app/logs
+      - ./runs:/app/runs
+      # Mount models (in case you want to update them)
+      - ./models:/app/models
+      # Mount config
+      - ./deployment_config.json:/app/deployment_config.json
+      # For camera access (Linux only)
+      - /dev/video0:/dev/video0
+    devices:
+      # For GPU support (NVIDIA)
+      - /dev/dri:/dev/dri
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility,video
+    network_mode: host
+    stdin_open: true
+    tty: true
+    # For GUI support (Linux)
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+    command: python deploy_traffic_monitor.py --mode camera
+
+  # Alternative service for batch processing
+  trafficai-batch:
+    build: .
+    image: trafficai:latest
+    container_name: trafficai-batch
+    volumes:
+      - ./data:/app/data
+      - ./violations:/app/violations
+      - ./logs:/app/logs
+      - ./input:/app/input
+      - ./output:/app/output
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    command: python deploy_traffic_monitor.py --mode batch --input /app/input --output /app/output
+
+  # Service for training
+  trafficai-train:
+    build: .
+    image: trafficai:latest
+    container_name: trafficai-train
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./runs:/app/runs
+      - ./logs:/app/logs
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    command: python train_model.py

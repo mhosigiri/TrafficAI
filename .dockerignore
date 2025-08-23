@@ -1,0 +1,58 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Project specific
+violations/
+logs/
+runs/
+temp_*/
+deployment_test/
+data_backup/
+
+# Test files
+test_*.py
+*_test.py
+check_*.py
+setup_*.py
+demo_*.py
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Documentation
+*.md
+!README.md
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# YOLO base models (keep only trained models)
+yolo*.pt
+!models/*.pt
+
+# Cache
+*.cache
+.pytest_cache/
+.mypy_cache/
+
+# Notebooks
+*.ipynb
+.ipynb_checkpoints/

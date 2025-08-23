@@ -1,0 +1,23 @@
+{
+    "helmet_model": "models/helmet_yolov8_gpu.pt",
+    "license_plate_model": "models/license_plate_yolov8.pt",
+    "helmet_confidence": 0.3,
+    "plate_confidence": 0.4,
+    "device": "auto",
+    "save_violations": true,
+    "output_dir": "violations",
+    "log_level": "INFO",
+    "enable_ocr": true,
+    "video_output_fps": 30,
+    "max_detections": 100,
+    "violation_alert": {
+        "enabled": true,
+        "min_confidence": 0.5,
+        "save_evidence": true
+    },
+    "performance": {
+        "gpu_memory_fraction": 0.8,
+        "batch_size": 1,
+        "num_threads": 4
+    }
+}
