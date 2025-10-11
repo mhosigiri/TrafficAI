@@ -196,14 +196,9 @@ cython_debug/
 # Project specific ignores
 AGENTS.md
 
-# Ignore all markdown files except README.md and Docker docs
+# Ignore all markdown files except README.md
 *.md
 !README.md
-!README_DOCKER.md
-!README_WEB.md
-
-# Ignore data backup folder
-data_backup/
 
 # Ignore test files
 test_*.py
