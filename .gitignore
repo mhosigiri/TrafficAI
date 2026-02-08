@@ -205,7 +205,6 @@ test_*.py
 *_test.py
 check_*.py
 setup_*.py
-!setup_trafficai.py
 demo_*.py
 download_*.py
 

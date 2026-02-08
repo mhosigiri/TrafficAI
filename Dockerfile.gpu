@@ -39,9 +39,6 @@ COPY config/ ./config/
 COPY models/ ./models/
 COPY deploy_traffic_monitor.py .
 COPY deployment_config.json .
-COPY quick_start.py .
-COPY train_model.py .
-COPY train_license_plate_model.py .
 
 # Create necessary directories
 RUN mkdir -p data/images data/labels data/annotations \
